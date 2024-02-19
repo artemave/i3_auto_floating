@@ -2,6 +2,10 @@
 
 Remember floating state of [i3wm](https://i3wm.org/) windows and automatically set it when a new window of the same app is created.
 
+## Description
+
+One can set certain apps to start in floating mode in i3 config, but that's a bit too manual. Wouldn't it be nice if i3 just remembered my choice when I turn on floating and then apply it next time I start the same app? Well, i3 can't do that, but this thing you're looking at can.
+
 ## Install
 
 ```sh
