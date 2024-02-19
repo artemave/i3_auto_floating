@@ -53,22 +53,23 @@ def find_focused_node(node):
     return None
 
 
-os.system('i3-msg floating toggle')
+def main():
+    os.system('i3-msg floating toggle')
 
-floating_state, props = get_floating_state()
+    floating_state, props = get_floating_state()
 
-if floating_state:
-    key = cacheKey(props)
+    if floating_state:
+        key = cacheKey(props)
 
-    with open(cacheFilePath, 'r+') as f:
-        lines = f.read().splitlines()
+        with open(cacheFilePath, 'r+') as f:
+            lines = f.read().splitlines()
 
-        if floating_state == 'user_on' and key not in lines:
-            lines.append(key)
+            if floating_state == 'user_on' and key not in lines:
+                lines.append(key)
 
-        if floating_state == 'user_off' and key in lines:
-            lines.remove(key)
+            if floating_state == 'user_off' and key in lines:
+                lines.remove(key)
 
-        f.seek(0)
-        f.truncate()
-        f.write('\n'.join(lines))
+            f.seek(0)
+            f.truncate()
+            f.write('\n'.join(lines))

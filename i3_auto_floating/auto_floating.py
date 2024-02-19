@@ -2,7 +2,7 @@
 
 from i3ipc import Connection
 from i3ipc import Event
-from shared import cacheKey, cacheFilePath
+from i3_auto_floating.shared import cacheKey, cacheFilePath
 
 
 def on_window_new(_, e):
@@ -13,7 +13,8 @@ def on_window_new(_, e):
             e.container.command('floating enable')
 
 
-i3 = Connection()
-i3.on(Event.WINDOW_NEW, on_window_new)
+def main():
+    i3 = Connection()
+    i3.on(Event.WINDOW_NEW, on_window_new)
 
-i3.main()
+    i3.main()
