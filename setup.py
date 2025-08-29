@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='i3_auto_floating',
-    version='1.3',
-    description='Remember floating state of i3wm windows and automatically set it when a new window of the same app is created.',
+    version='1.4',
+    description='Remember floating state of i3wm and Sway windows and automatically set it when a new window of the same app is created.',
     author='Artem Avetisyan',
     packages=find_packages(),
     license='MIT',

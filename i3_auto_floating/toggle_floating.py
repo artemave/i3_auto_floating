@@ -1,75 +1,28 @@
 #!/usr/bin/env python3
 
-import os
-import json
-from types import SimpleNamespace
-import subprocess
-import json
-from i3_auto_floating.shared import cacheKey, cacheFilePath
-
-def get_floating_state():
-    result = subprocess.run(['i3-msg', '-t', 'get_tree'], capture_output=True, text=True)
-
-    tree = json.loads(result.stdout)
-
-    focused_node = find_focused_node(tree)
-
-    if focused_node:
-        floating_state = focused_node.get('floating', None)
-        window_class = focused_node.get('window_properties', {}).get('class')
-        window_title = focused_node.get('name')
-        window_role = focused_node.get('window_properties', {}).get('window_role', None)
-        window_instance = focused_node.get('window_properties', {}).get('instance')
-
-        props = SimpleNamespace(**{
-            'window_class': window_class,
-            'window_title': window_title,
-            'window_role': window_role,
-            'window_instance': window_instance
-        })
-
-        return (
-            floating_state,
-            props
-        )
-    else:
-        return (None, None)
-
-def find_focused_node(node):
-    # Recursively search for the focused node in the tree
-    if isinstance(node, dict):
-        if node.get('focused', False):
-            return node
-        else:
-            for _, value in node.items():
-                result = find_focused_node(value)
-                if result:
-                    return result
-    elif isinstance(node, list):
-        for item in node:
-            result = find_focused_node(item)
-            if result:
-                return result
-    return None
-
+import i3ipc
+from i3_auto_floating.shared import load_state, save_state, key_for
 
 def main():
-    os.system('i3-msg floating toggle')
+    # Connect to i3/Sway
+    conn = i3ipc.Connection()
 
-    floating_state, props = get_floating_state()
+    # Get the focused window
+    focused = conn.get_tree().find_focused()
+    if not focused:
+        return
 
-    if floating_state:
-        key = cacheKey(props)
+    # Toggle floating
+    focused.command('floating toggle')
 
-        with open(cacheFilePath, 'r+') as f:
-            lines = f.read().splitlines()
+    # Load current state
+    state = load_state()
 
-            if floating_state == 'user_on' and key not in lines:
-                lines.append(key)
-
-            if floating_state == 'user_off' and key in lines:
-                lines.remove(key)
-
-            f.seek(0)
-            f.truncate()
-            f.write('\n'.join(lines))
+    # Update state based on new floating status
+    # Note: we need to check the floating state after the toggle
+    focused = conn.get_tree().find_focused()  # Refresh the window info
+    if focused:
+        k = key_for(focused)
+        is_floating = (focused.floating in ("auto_on", "user_on"))
+        state[k] = bool(is_floating)
+        save_state(state)
