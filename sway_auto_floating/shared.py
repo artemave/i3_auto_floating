@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-STATE_PATH = Path.home() / ".config/i3_auto_floating/floating-state.json"
+STATE_PATH = Path.home() / ".config/sway_auto_floating/floating-state.json"
 
 def load_state():
     try:

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import i3ipc
-from i3_auto_floating.shared import load_state, save_state, key_for
+from sway_auto_floating.shared import load_state, save_state, key_for
 
 def main():
     conn = i3ipc.Connection()

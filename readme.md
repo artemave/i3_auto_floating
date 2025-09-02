@@ -1,4 +1,4 @@
-# i3 auto floating
+# sway auto floating
 
 Remember floating state of [Sway](https://swaywm.org/) windows and automatically set it when a new window of the same app is created.
 
@@ -9,7 +9,7 @@ One can set certain apps to start in floating mode in Sway config, but that's a 
 ## Install
 
 ```sh
-pip install i3_auto_floating
+pip install sway_auto_floating
 ```
 
 ## Configure
@@ -17,9 +17,9 @@ pip install i3_auto_floating
 In `~/.config/sway/config` replace your existing floating toggle and start the auto toggle watcher:
 
 ```
-bindsym $mod+Shift+space exec i3_toggle_floating
+bindsym $mod+Shift+space exec sway_toggle_floating
 
-exec i3_auto_floating &
+exec sway_auto_floating &
 ```
 
 ## Run local version
@@ -38,5 +38,5 @@ python3 -m build
 Then upload
 
 ```sh
-twine upload dist/i3_auto_floating-X.Y.tar.gz
+twine upload dist/sway_auto_floating-X.Y.tar.gz
 ```

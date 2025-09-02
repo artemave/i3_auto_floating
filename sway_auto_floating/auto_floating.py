@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import i3ipc
-from i3_auto_floating.shared import load_state, save_state, key_for
+from sway_auto_floating.shared import load_state, save_state, key_for
 
 def apply_remembered(conn, container, state):
     k = key_for(conn, container)
@@ -18,6 +18,7 @@ def main():
         apply_remembered(conn, container, state)
 
     def on_window(conn, e):
+        state = load_state()
         container = e.container
         apply_remembered(conn, container, state)
 
