@@ -15,14 +15,15 @@ def save_state(state):
     tmp.write_text(json.dumps(state, indent=2, sort_keys=True))
     tmp.replace(STATE_PATH)
 
-def key_for(con):
-    """Generate a unique key for a window container that works with both i3 and Sway."""
-    # Wayland-native apps have app_id; Xwayland apps use class/instance.
-    if hasattr(con, 'app_id') and con.app_id:
-        return f"wayland::{con.app_id}"
-    wc = getattr(con, "window_class", None)
-    wi = getattr(con, "window_instance", None)
-    if wc or wi:
-        return f"x11::{wc or ''}::{wi or ''}"
-    # Fallback to workspace+title (last resort; can be noisy)
-    return f"other::{con.workspace().name if con.workspace() else ''}::{con.name or ''}"
+def key_for(conn, container):
+    base_key = f"wayland::{container.app_id}"
+
+    # Check if another window with same app_id exists
+    all_windows = conn.get_tree().leaves()
+
+    for w in all_windows:
+        # If it does, use more specific key
+        if w.id != container.id and w.app_id == container.app_id:
+            return f"{base_key}::{container.name[:50]}"
+
+    return base_key
