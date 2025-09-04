@@ -3,6 +3,7 @@
 import i3ipc
 from sway_auto_floating.shared import load_state, save_state, key_for
 
+
 def main():
     conn = i3ipc.Connection()
 
@@ -22,6 +23,7 @@ def main():
         del state[k]
 
     save_state(state)
+
 
 if __name__ == "__main__":
     main()

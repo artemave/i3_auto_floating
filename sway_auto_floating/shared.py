@@ -3,17 +3,20 @@ from pathlib import Path
 
 STATE_PATH = Path.home() / ".config/sway_auto_floating/floating-state.json"
 
+
 def load_state():
     try:
         return json.loads(STATE_PATH.read_text())
     except Exception:
         return {}
 
+
 def save_state(state):
     STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
     tmp = STATE_PATH.with_suffix(".tmp")
     tmp.write_text(json.dumps(state, indent=2, sort_keys=True))
     tmp.replace(STATE_PATH)
+
 
 def key_for(conn, container):
     base_key = f"wayland::{container.app_id}"

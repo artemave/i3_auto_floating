@@ -19,13 +19,21 @@ In `~/.config/sway/config` replace your existing floating toggle and start the a
 ```
 bindsym $mod+Shift+space exec sway_toggle_floating
 
-exec sway_auto_floating &
+exec --no-startup-id sway_auto_floating
 ```
 
 ## Run local version
 
+Install dependencies.
+
 ```sh
-pip install -e .
+pip install -e '.[dev]'
+```
+
+## Test
+
+```sh
+pytest
 ```
 
 ## Build

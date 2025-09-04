@@ -12,6 +12,14 @@ setup(
     install_requires=[
         'i3ipc>=2.2.1',
     ],
+    extras_require={
+        'dev': [
+            'pytest>=6.0',
+            'pytest-mock>=3.0',
+            'flake8>=4.0',
+            'autopep8>=1.6',
+        ],
+    },
     entry_points={
         'console_scripts': [
             'sway_toggle_floating = sway_auto_floating.toggle_floating:main',
